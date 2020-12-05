@@ -35,7 +35,6 @@ def train(cfg):
     trainer = DefaultTrainer(cfg)
     trainer.resume_or_load(resume=False)
     trainer.train()
-    # trainer.test(cfg, )
 
 
 def get_arguments():
@@ -60,16 +59,11 @@ def main():
         cfg.DATALOADER.NUM_WORKERS = 2
 
         # Let training initialize from model zoo
-        # cfg.MODEL.WEIGHTS = model_zoo.get_checkpoint_url(
-        #     "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml")
         cfg.MODEL.WEIGHTS = "https://dl.fbaipublicfiles.com/detectron2/ImageNetPretrained/MSRA/R-50.pkl"
-        # cfg.MODEL.WEIGHTS = 'output/model_0029999.pth'
 
         cfg.SOLVER.IMS_PER_BATCH = 2
-        cfg.SOLVER.BASE_LR = args.lr  # pick a good LR
-        # 300 iterations seems good enough for this toy dataset
+        cfg.SOLVER.BASE_LR = args.lr
         cfg.SOLVER.MAX_ITER = args.iter
-        # faster, and good enough for this toy dataset (default: 512)
         cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 512
         cfg.MODEL.ROI_HEADS.NUM_CLASSES = 20
 
@@ -78,21 +72,13 @@ def main():
         cfg = get_cfg()
         cfg.merge_from_file(model_zoo.get_config_file(
             "COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml"))
-        # cfg.DATASETS.TRAIN = ("my_dataset_train",)
         cfg.DATASETS.TRAIN = ()
         cfg.DATASETS.TEST = ("my_dataset_test",)
         cfg.DATALOADER.NUM_WORKERS = 2
         cfg.MODEL.ROI_HEADS.NUM_CLASSES = 20
-
-        # load trained weights
         cfg.MODEL.WEIGHTS = os.path.join(cfg.OUTPUT_DIR, "model_final.pth")
         cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.5  # mAP with thresh 0.5
 
-        # test
-        # trainer = DefaultTrainer(cfg)
-        # trainer.resume_or_load(resume=False)
-        # ret = trainer.test
-        # print(ret)
         ret = test(cfg)
         with open("submission.json", "w") as f:
             json.dump(ret, f)

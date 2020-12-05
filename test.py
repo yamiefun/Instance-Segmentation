@@ -49,32 +49,4 @@ def test(cfg):
 
             ret.append(instance)
 
-            # print(type(instance['image_id']))
-            # print(type(instance['score']))
-            # print(type(instance['category_id']))
-            # print(type(instance['segmentation']))
-            # print(type(instance['segmentation']['size']))
-            # print(type(instance['segmentation']['counts']))
-
     return ret
-
-
-def test_one(cfg):
-    file_name = os.path.join("dataset/test_images", '2011_002641.jpg')
-    img = cv2.imread(file_name)
-    output = predictor(img)
-
-    bit_mask = output['instances'].get_fields()['pred_masks'].to("cpu").numpy()
-    rle = binary_mask_to_rle(bit_mask)
-    print(rle)
-
-    print(output['instances'].get_fields()['scores'][0].to("cpu").numpy())
-
-    v = Visualizer(img[:, :, ::-1],
-                   # metadata=balloon_metadata,
-                   scale=1.0,
-                   # remove the colors of unsegmented pixels. This option is only available for segmentation models
-                   instance_mode=ColorMode.IMAGE_BW
-                   )
-    out = v.draw_instance_predictions(output["instances"].to("cpu"))
-    cv2.imwrite("test.jpg", out.get_image()[:, :, ::-1])
