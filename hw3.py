@@ -42,7 +42,7 @@ def get_arguments():
     arg_parser.add_argument("--lr", default=0.00025, type=float)
     arg_parser.add_argument("--mode", default="train")
     arg_parser.add_argument("--log_interval", default=10)
-    arg_parser.add_argument("--iter", default=300, type=int)
+    arg_parser.add_argument("--iter", default=10000, type=int)
     args = arg_parser.parse_args()
     return args
 
