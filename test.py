@@ -18,12 +18,6 @@ def test(cfg):
 
     df = json.load(open('dataset/test.json'))
 
-    # create categories dictionary
-    cats = df['categories']
-    cat_dict = {}
-    for cat in cats:
-        cat_dict[cat['name']] = cat['id']
-
     for image in df['images']:
         file_name = image['file_name']
         height = image['height']

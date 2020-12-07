@@ -1,4 +1,5 @@
 import random
+import time
 import cv2
 import json
 import os
@@ -48,6 +49,7 @@ def get_arguments():
 
 
 def main():
+    start_ts = time.time()
     args = get_arguments()
     load_data()
     if args.mode == "train":
@@ -61,7 +63,7 @@ def main():
         # Let training initialize from model zoo
         cfg.MODEL.WEIGHTS = "https://dl.fbaipublicfiles.com/detectron2/ImageNetPretrained/MSRA/R-50.pkl"
 
-        cfg.SOLVER.IMS_PER_BATCH = 2
+        cfg.SOLVER.IMS_PER_BATCH = 4
         cfg.SOLVER.BASE_LR = args.lr
         cfg.SOLVER.MAX_ITER = args.iter
         cfg.MODEL.ROI_HEADS.BATCH_SIZE_PER_IMAGE = 512
@@ -86,6 +88,8 @@ def main():
     else:
         print("mode not support")
         exit(0)
+    end_ts = time.time()
+    print("cost time:  ", end_ts-start_ts)
 
 
 if __name__ == "__main__":
