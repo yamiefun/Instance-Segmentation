@@ -22,8 +22,18 @@ I used mask-RCNN provided by [detectron2](https://detectron2.readthedocs.io/). T
     ```
     python3 hw3.py --mode test
     ```
+4. (Optional) To draw the training loss image, you should pipe the training log to a file named `train.log` by 
+    ```
+    python3 hw3.py --mode train --iter 300 > train.log
+    ```
+    for example. After finish training, simply run 
+    ```
+    python3 log_parse.py
+    ```
+    to draw the training loss chart.
 
 ## Result
 In my experiments, I trained 50k iterations and get mAP@0.5: `0.49298`.
+![](https://i.imgur.com/ikRpjJa.png)
 ## Reference
 + [detectron2](https://github.com/facebookresearch/detectron2)
